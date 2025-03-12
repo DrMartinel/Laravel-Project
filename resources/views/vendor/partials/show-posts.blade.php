@@ -1,4 +1,15 @@
 <div class="ibox-content forum-post-container">
+{{--    <div class="media" id="author" >--}}
+{{--        <label class="col-sm-1 control-label">Category</label>--}}
+{{--        <div class="">--}}
+{{--            <div class="col-lg-4">--}}
+{{--                <select class="form-control" id="category"  name="author">--}}
+{{--                    <option value="book">Book</option>--}}
+{{--                    <option value="blog">Blog</option>--}}
+{{--                </select>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
     @foreach($userItems as $items)
         @php
             if(isset($items->author)) $category = 'book';
@@ -39,3 +50,5 @@
     @endforeach
     {{ $userItems->links('pagination::default') }}
 </div>
+<script>
+</script>

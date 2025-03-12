@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 @extends('vendor.layouts.app')
+@section('headline')
+    @php
+        $headline = 'My Posts';
+        $searchPage = false;
+    @endphp
+    @include('vendor.partials.headline',compact('headline','searchPage'))
+@endsection
+@section('content')
 @section('content')
         <div class="row">
             <div class="col-lg-12">
@@ -31,16 +39,6 @@
 <script src="frontend_resources/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <script>
-    document.getElementById("Blogs/Books").addEventListener("click",() => {
-        if(document.getElementById("booksContainer").hasAttribute("hidden")){
-            document.getElementById("booksContainer").removeAttribute("hidden");
-            document.getElementById("blogsContainer").setAttribute("hidden","true");
-        }else {
-            document.getElementById("booksContainer").setAttribute("hidden","true");
-            document.getElementById("blogsContainer").removeAttribute("hidden");
-        }
-    });
-
     Array.from(document.getElementsByClassName('removeItem')).forEach(item => {
         item.addEventListener('click', function(event) {
             event.preventDefault();

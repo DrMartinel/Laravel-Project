@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 @extends('vendor.layouts.app')
+@section('headline')
+    @php
+        $headline = 'All Posts';
+        $searchPage = false;
+    @endphp
+    @include('vendor.partials.headline',compact('headline','searchPage'))
+@endsection
 @section('content')
     <div class="row">
         <div class="col-lg-12">

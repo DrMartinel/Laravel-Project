@@ -19,6 +19,7 @@
             @include('vendor.partials.header')
             <div id="page-wrapper" class="gray-bg">
                 @include('vendor.partials.topnav')
+                @yield('headline')
                 @include('vendor.partials.form-errors')
                 @yield('content')
                 @include('vendor.partials.footer')

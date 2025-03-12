@@ -61,7 +61,8 @@
                                                 @foreach($authors as $author)
                                                     <option value="{{$author->id}}">{{$author->name}}</option>
                                                 @endforeach
-                                            </select></div>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -74,14 +75,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="footer">
-            <div class="pull-right">
-                10GB of <strong>250GB</strong> Free.
-            </div>
-            <div>
-                <strong>Copyright</strong> Example Company &copy; 2014-2017
             </div>
         </div>
     @endsection
