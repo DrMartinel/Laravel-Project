@@ -1,82 +1,23 @@
 <!DOCTYPE html>
 @extends('vendor.layouts.app')
-        @section('content')
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="wrapper wrapper-content animated fadeInRight" id="booksContainer">
-                    <div class="ibox-content forum-post-container">
-                        @foreach($userBooks as $book)
-                                <div class="forum-post-info">
-                                    <h4><span class="text-navy"><i class="fa fa-globe"></i> Your books</span> -  <span class="text-muted">Free talks</span></h4>
-                                </div>
-                                <div class="media">
-                                    <a class="forum-avatar" href="#">
-                                        <img src="frontend_resources/img/a1.jpg" class="img-circle" alt="image">
-                                        <div class="author-info">
-                                            <strong>Posts:</strong> 542<br/>
-                                            <strong>Joined:</strong> April 11.2015<br/>
-                                        </div>
-                                    </a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">{{ $book->title }}</h4>
-                                        <h4 class="media-heading">{!! $book->content  !!}</h4>
-                                        - Uploaded by {{$book->uploader->name}}
-                                        <br>
-                                        - Written by {{$book->author->name}}
-                                    </div>
-                                    @if($book->uploader->id == $userId)
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link removeItem" href="{{route("deleteBooksRequest",$book->id)}}">
-                                                <i class="fa fa-remove"></i>
-                                            </a>
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="{{ route('editBooks', $book) }}">
-                                                <i class="fa fa-wrench"></i>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                </div>
-                        @endforeach
-                            {{ $userBooks->appends(['blogs' => request('blogs')])->links('pagination::default') }}
-                    </div>
-                </div>
-                <div class="wrapper wrapper-content animated fadeInRight" id="blogsContainer">
-                    <div class="ibox-content forum-post-container">
-                        @foreach($userBlogs as $blog)
-                                <div class="forum-post-info">
-                                    <h4><span class="text-navy"><i class="fa fa-globe"></i> Your blogs</span> -  <span class="text-muted">Free talks</span></h4>
-                                </div>
-                                <div class="media">
-                                    <a class="forum-avatar" href="#">
-                                        <img src="frontend_resources/img/a1.jpg" class="img-circle" alt="image">
-                                        <div class="author-info">
-                                            <strong>Posts:</strong> 542<br/>
-                                            <strong>Joined:</strong> April 11.2015<br/>
-                                        </div>
-                                    </a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">{{ $blog->title }}</h4>
-                                        <h4 class="media-heading">{!! $blog->content  !!}</h4>
-                                        - Uploaded by {{$blog->uploader->name}}
-                                    </div>
-                                    @if($blog->uploader->id == $userId)
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link removeItem" href="{{route("deleteBlogsRequest",$blog->id)}}">
-                                            <i class="fa fa-remove removeItem"></i>
-                                        </a>
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ route('editBlogs', $blog) }}" id="editPosts">
-                                            <i class="fa fa-wrench"></i>
-                                        </a>
-                                    </div>
-                                    @endif
-                                </div>
-                        @endforeach
-                            {{ $userBlogs->appends(['books' => request('books')])->links('pagination::default') }}
-                    </div>
-                </div>
+@section('content')
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInRight" id="booksContainer">
+                @php
+                    $userItems = $userBooks
+                @endphp
+                @include('vendor.partials.show-posts', compact('userItems'))
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight" id="blogsContainer">
+                @php
+                    $userItems = $userBlogs
+                @endphp
+                @include('vendor.partials.show-posts',compact('userItems'))
             </div>
         </div>
-        @endsection
+    </div>
+@endsection
 <style>
     .noti-box{
         opacity: 0;
