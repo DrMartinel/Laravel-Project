@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BasicRequest;
 use App\Http\Requests\PostRequest;
 use App\Models\Blog;
 use App\Models\Book;
@@ -104,4 +105,13 @@ class PostController extends Controller
         Blog::where('id', $data)->delete();
         return redirect(route('mainpage'))->with('success','Blog deleted successfully');
     }
+
+//    public function changeCategory(BasicRequest $request){
+//        if(!$request->authorize()) {
+//            return redirect('admin')->with('error','You are not authorized to access this page');
+//        }else{
+//            $category = $request->input('category_id');
+//            return view('mainpage',compact('category'));
+//        }
+//    }
 }

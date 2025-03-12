@@ -14,7 +14,7 @@ Route::get('/', function () {
     }
 
 });
-
+//
 //Route::get('/', function () {
 //    return view ('welcome');
 //});
@@ -40,6 +40,7 @@ Route::get('deleteBooks/{book}',[PostController::class,'deleteBooks'])->name('de
 Route::get('allPosts',[MainPageController::class,'allPosts'])->name('allPosts');
 
 Route::post('searchResults',[MainPageController::class,'searchPosts'])->name('searchPosts');
+//Route::post('changeCategory',[PostController::class,'changeCategory'])->name('changeCategory');
 
 Route::post('login',[AuthController::class,'login'])->name('login');
 Route::post('register',[UserController::class,'register'])->name('register');
