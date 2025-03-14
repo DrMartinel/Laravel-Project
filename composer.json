@@ -10,13 +10,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "algolia/algoliasearch-client-php": "^4.15",
         "laravel/framework": "^12.0",
         "laravel/prompts": "^0.3.5",
         "laravel/scout": "^10.13",
         "laravel/tinker": "^2.10.1",
-        "tinymce/tinymce": "^7.7",
-        "typesense/typesense-php": "^5.0"
+        "tinymce/tinymce": "^7.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

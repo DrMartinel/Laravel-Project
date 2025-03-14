@@ -1,0 +1,60 @@
+FROM php:8.3-fpm AS base
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-setuptools\
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    libzip-dev \
+    nodejs \
+    npm \
+    libjpeg62-turbo-dev \
+    libfreetype-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd zip pdo_mysql mbstring exif pcntl bcmath
+
+# Install setuptools (this is the fix)
+RUN apt-get update && apt-get install -y --no-install-recommends python3-setuptools
+
+# Get composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Clear Cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /var/www
+
+# --- Development Stage ---
+FROM base AS development
+COPY . /var/www
+RUN composer install --optimize-autoloader --no-dev
+COPY package*.json ./
+RUN npm install && npm run build
+COPY .env .env
+EXPOSE 9000
+CMD ["php-fpm"]
+RUN php artisan key:generate
+#RUN php artisan migrate
+#RUN php artisan db:seed
+
+
+
+## --- Production Stage ---
+#FROM base AS production
+#COPY . /var/www
+#RUN composer install --optimize-autoloader --no-dev
+#COPY package*.json ./
+#RUN npm install --production && npm run build  # Build assets for production
+#COPY .env.production .env
+#RUN php artisan optimize:clear \
+# && php artisan config:cache \
+# && php artisan route:cache \
+# && php artisan view:cache
+#EXPOSE 9000
+#CMD ["php-fpm"]
