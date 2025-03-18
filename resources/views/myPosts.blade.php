@@ -2,14 +2,14 @@
 @extends('vendor.layouts.app')
 @section('headline')
     @php
-        $headline = (isset($userBooks)) ? "All Books" : "All Blogs";
+        $headline = (isset($userBooks)) ? "My Books" : "My Blogs";
         $searchPage = false;
     @endphp
     @include('vendor.partials.headline',compact('headline','searchPage'))
 @endsection
 @section('content')
-    <div class="row">
-        <div class="col-lg-12">
+@section('content')
+        <div class="row">
             @if(isset($userBooks))
                 <div class="wrapper wrapper-content animated fadeInRight" id="booksContainer">
                     @php
@@ -25,17 +25,8 @@
                     @include('vendor.partials.show-posts',compact('userItems'))
                 </div>
             @endif
-
-
         </div>
-    </div>
 @endsection
-<style>
-    .noti-box{
-        opacity: 0;
-        transition: opacity 1s ease-out;
-    }
-</style>
 <!-- Mainly scripts -->
 <script src="js/jquery-3.1.1.min.js"></script>
 <script src="frontend_resources/js/bootstrap.min.js"></script>

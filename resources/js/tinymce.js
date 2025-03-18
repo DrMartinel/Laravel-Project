@@ -29,10 +29,12 @@ import 'tinymce/skins/content/default/content.js';
 window.addEventListener('DOMContentLoaded', () => {
     tinymce.init({
         selector: 'textarea#tinymce',
-        height: 500,
-        plugins: 'advlist code emoticons link lists table',
-        toolbar: 'bold italic | bullist numlist | link emoticons',
+        width: 1280,
         skin_url: 'default',
         content_css: 'default',
+        extended_valid_elements: 'p,strong,em,a[href|target=_blank],span[class|style]',
+        plugins: 'powerpaste casechange searchreplace autolink directionality visualblocks visualchars image link media mediaembed codesample table charmap pagebreak nonbreaking anchor tableofcontents insertdatetime advlist lists checklist wordcount tinymcespellchecker editimage help formatpainter permanentpen charmap linkchecker emoticons advtable export autosave advcode fullscreen',
+        toolbar: 'undo redo print spellcheckdialog formatpainter | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image | alignleft aligncenter alignright alignjustify',
+        height: '600px',
     });
 });

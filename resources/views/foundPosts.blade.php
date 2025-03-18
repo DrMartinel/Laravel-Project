@@ -11,15 +11,9 @@
         <div class="col-lg-12">
             <div class="wrapper wrapper-content animated fadeInRight" id="booksContainer">
                 @php
-                    $userItems = $userBooks
+                    $userItems = $foundResult
                 @endphp
                 @include('vendor.partials.show-posts', compact('userItems'))
-            </div>
-            <div class="wrapper wrapper-content animated fadeInRight" id="blogsContainer">
-                @php
-                    $userItems = $userBlogs
-                @endphp
-                @include('vendor.partials.show-posts',compact('userItems'))
             </div>
         </div>
     </div>
