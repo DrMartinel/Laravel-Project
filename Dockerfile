@@ -26,10 +26,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Clear Cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN chown -R www-data:www-data /var/www
-RUN find /var/www -type d -exec chmod 755 {} \;
-RUN find /var/www -type f -exec chmod 644 {} \;
-
 # Set working directory
 WORKDIR /var/www
 
