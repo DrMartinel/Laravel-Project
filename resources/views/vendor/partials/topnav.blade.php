@@ -39,12 +39,6 @@
                         </div>
                     </div>
                 </div>
-{{--                <form role="search" class="navbar-form-custom" action="{{route("searchPosts")}}" method="post">--}}
-{{--                    @csrf--}}
-{{--                    <div class="form-group">--}}
-{{--                        <input type="text" placeholder="Search for something..." class="form-control" name="search" id="search">--}}
-{{--                    </div>--}}
-{{--                </form>--}}
             </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li>

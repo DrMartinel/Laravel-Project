@@ -39,9 +39,18 @@ class MainPageController extends Controller
     }
 
     public function searchPosts(BasicRequest $request){
-        $data = $request->input("keyword");
-        $category = $request->input("category");
+        $requestType = $request->method();
         $userId = auth()->user()->id;
+        if ($requestType === 'POST'){
+            session(['form_data' => $request->all()]);
+            $data = $request->input("keyword");
+            $category = $request->input("category");
+        }
+        else {
+            $formData = session('form_data');
+            $data = $formData['keyword'];
+            $category = $formData['category'];
+        }
 
         $userBooks = Book::query() // Start with a base query
         ->with(['uploader', 'author'])  // Eager load relationships
@@ -102,7 +111,7 @@ class MainPageController extends Controller
 
     public function viewPosts(String $category, int $id){
         $userId = auth()->user()->id;
-        if($category == 'book'){
+        if($category == 'Book'){
             $items = Book::find($id);
         }else {
             $items = Blog::find($id);

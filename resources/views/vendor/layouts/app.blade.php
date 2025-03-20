@@ -9,7 +9,6 @@
         <link href="{{asset('css/plugins/iCheck/custom.css')}}" rel="stylesheet">
         <link href="{{asset('css/animate.css')}}" rel="stylesheet">
         <link href="{{asset('css/style.css')}}" rel="stylesheet">
-        <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
         <link href="{{asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}" rel="stylesheet">
         @vite(['resources/js/tinymce.js'])
@@ -18,10 +17,9 @@
         <div id="wrapper">
             @include('vendor.partials.header')
             <div id="page-wrapper" class="gray-bg">
-                @include('vendor.partials.form-errors')
                 @include('vendor.partials.topnav')
                 @yield('headline')
-
+                @include('vendor.partials.form-errors')
                 @yield('content')
                 @include('vendor.partials.footer')
             </div>

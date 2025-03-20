@@ -44,5 +44,7 @@ Route::get('viewPosts/{category}/{id}',[MainPageController::class,'viewPosts'])-
 
 
 Route::post('searchResults',[MainPageController::class,'searchPosts'])->name('searchPosts');
+Route::get('searchResults',[MainPageController::class,'searchPosts'])->name('searchPosts');
+Route::get('searchResultsView',[MainPageController::class,'searchPostsView'])->name('searchPostsView');
 
 

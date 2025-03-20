@@ -38,14 +38,15 @@ RUN find /var/www -type f -exec chmod 644 {} \;
 # Set working directory
 WORKDIR /var/www
 
-## --- Development Stage ---
-#FROM base AS development
-#COPY . /var/www
-#RUN composer install --optimize-autoloader --no-dev
-#COPY package*.json ./
-#RUN npm install
-#EXPOSE 9000
-#CMD ["php-fpm"]
+# --- Development Stage ---
+FROM base AS development
+COPY . /var/www
+RUN composer install --optimize-autoloader --no-dev
+COPY package*.json ./
+RUN npm install && npm run build  # Build assets for production
+COPY .env.production .env
+EXPOSE 9000
+CMD ["php-fpm"]
 
 
 # --- Production Stage ---

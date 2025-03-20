@@ -58,4 +58,13 @@
         </div>
     @endsection
 
+<script>
+    function hideAuthor(){
+        document.getElementById("author").style.display = "none";
+    }
+
+    function showAuthor(){
+        document.getElementById("author").style.display = "";
+    }
+</script>
 

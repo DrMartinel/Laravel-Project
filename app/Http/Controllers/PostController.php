@@ -20,7 +20,6 @@ class PostController extends Controller
         if(!$request->authorize()) {
             return redirect('admin')->with('error','You are not authorized to access this page');
         }else{
-//            return redirect('homepage')->with('sucesss','Successfully added a new post');
             $data = [
               'title' => $request->input('title'),
               'content' => $request->input('content'),
@@ -44,7 +43,6 @@ class PostController extends Controller
                 }
 
             }catch(\Exception $e){
-//                return redirect()->back()->with('error',$e->getMessage());
                 return redirect()->back()->with('error',$data['title'].'|'.$data['content'].'|'.$data['author'].'<br>'.$e->getMessage());
             }
 

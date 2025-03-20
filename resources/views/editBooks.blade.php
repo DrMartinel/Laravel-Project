@@ -46,6 +46,14 @@
                                     <label class="col-sm-2 control-label">Content</label>
                                     <textarea id="tinymce" name="content">{{$book->content}}</textarea>
                                 </div>
+                                <div class="form-group hidden"><label class="col-sm-2 control-label">Category <br/>
+                                        <small class="text-navy">Identify your post's category</small></label>
+
+                                    <div class="col-sm-10">
+                                        <div><label> <input type="radio" checked="" value="book" id="optionsRadios1" name="category" onchange="showAuthor()"> Books </label></div>
+                                        <div><label> <input type="radio" value="blog" id="optionsRadios2" name="category" onchange="hideAuthor()"> Blogs </label></div>
+                                    </div>
+                                </div>
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group" id="author" >
                                     <label class="col-sm-2 control-label">Authors</label>
