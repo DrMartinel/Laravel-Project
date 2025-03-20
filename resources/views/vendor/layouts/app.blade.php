@@ -4,14 +4,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>@yield('title', 'BookVerse')</title>
 
-        <link href="{{asset('frontend_resources/css/bootstrap.min.css')}}" rel="stylesheet">
-        <link href="{{asset('frontend_resources/font-awesome/css/font-awesome.css')}}" rel="stylesheet">
-        <link href="{{asset('frontend_resources/css/plugins/iCheck/custom.css')}}" rel="stylesheet">
-        <link href="{{asset('frontend_resources/css/animate.css')}}" rel="stylesheet">
-        <link href="{{asset('frontend_resources/css/style.css')}}" rel="stylesheet">
-        <link href="{{asset('frontend_resources/css/style.css')}}" rel="stylesheet">
+        <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet">
+        <link href="{{asset('css/plugins/iCheck/custom.css')}}" rel="stylesheet">
+        <link href="{{asset('css/animate.css')}}" rel="stylesheet">
+        <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
-        <link href="{{asset('frontend_resources/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}" rel="stylesheet">
+        <link href="{{asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}" rel="stylesheet">
         @vite(['resources/js/tinymce.js'])
     </head>
     <body>
@@ -27,3 +26,12 @@
         </div>
     </body>
 </html>
+
+<script src="{{asset('js/jquery-3.1.1.min.js')}}"></script>
+<script src="{{asset('js/bootstrap.min.js')}}"></script>
+<script src="{{asset('js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
+<script src="{{asset('js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="{{asset('js/inspinia.js')}}"></script>
+<script src="{{asset('js/plugins/pace/pace.min.js')}}"></script>

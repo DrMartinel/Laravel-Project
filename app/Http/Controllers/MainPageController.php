@@ -14,7 +14,7 @@ class MainPageController extends Controller
     {
     }
 
-    public function index(BasicRequest $request){
+    public function myBooks(BasicRequest $request){
         if(!$request->authorize()) {
             return redirect('admin')->with('error','You are not authorized to access this page');
         }else{
@@ -22,18 +22,35 @@ class MainPageController extends Controller
             $userBooks = Book::with(['uploader','author'])
                 ->where('uploader_id', $userId)
                 ->paginate(3, ['*'], 'books');
-//                ->get();
+            return view('myPosts',compact('userBooks','userId'));
+        }
+    }
+
+    public function myBlogs(BasicRequest $request){
+        if(!$request->authorize()) {
+            return redirect('admin')->with('error','You are not authorized to access this page');
+        }else{
+            $userId = auth()->user()->id;
             $userBlogs = Blog::with('uploader')
                 ->where('uploader_id', $userId)
                 ->paginate(3, ['*'], 'blogs');
-//                ->get();
-            return view('mainpage',compact('userBooks','userBlogs','userId'));
+            return view('myPosts',compact('userBlogs','userId'));
         }
     }
 
     public function searchPosts(BasicRequest $request){
-        $data = $request->input("search");
+        $requestType = $request->method();
         $userId = auth()->user()->id;
+        if ($requestType === 'POST'){
+            session(['form_data' => $request->all()]);
+            $data = $request->input("keyword");
+            $category = $request->input("category");
+        }
+        else {
+            $formData = session('form_data');
+            $data = $formData['keyword'];
+            $category = $formData['category'];
+        }
 
         $userBooks = Book::query() // Start with a base query
         ->with(['uploader', 'author'])  // Eager load relationships
@@ -53,15 +70,23 @@ class MainPageController extends Controller
             ->orderBy('title')
             ->paginate(3, ['*'], 'blogs');
 
-        return view('foundPosts',compact('userBooks','userBlogs','data','userId'));
+        $foundResult = ($category == "book") ? $userBooks : $userBlogs;
+
+        return view('foundPosts',compact('foundResult','data','userId'));
     }
 
-    public function allPosts(){
+    public function allBooks(){
         $userId = auth()->user()->id;
         $userBooks = Book::with(['uploader','author'])->paginate(3, ['*'], 'books');
-        $userBlogs = Blog::with('uploader')->paginate(3, ['*'], 'blogs');
-        return view('allPosts',compact('userBooks','userBlogs','userId'));
+        return view('allPosts',compact('userBooks','userId'));
     }
+
+    public function allBlogs(){
+        $userId = auth()->user()->id;
+        $userBlogs = Blog::with('uploader')->paginate(3, ['*'], 'blogs');
+        return view('allPosts',compact('userBlogs','userId'));
+    }
+
 
     public function newPosts(BasicRequest $request){
         if(!$request->authorize()) {
@@ -84,4 +109,13 @@ class MainPageController extends Controller
         return view('editBlogs', compact('blog','authors'));
     }
 
+    public function viewPosts(String $category, int $id){
+        $userId = auth()->user()->id;
+        if($category == 'Book'){
+            $items = Book::find($id);
+        }else {
+            $items = Blog::find($id);
+        }
+        return(view('watchPosts',compact('items', 'id','userId','category')));
+    }
 }

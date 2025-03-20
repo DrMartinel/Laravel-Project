@@ -2,7 +2,6 @@ FROM php:8.3-fpm AS base
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3-setuptools\
     git \
     curl \
     libpng-dev \
@@ -35,26 +34,18 @@ FROM base AS development
 COPY . /var/www
 RUN composer install --optimize-autoloader --no-dev
 COPY package*.json ./
-RUN npm install && npm run build
-COPY .env .env
+RUN npm install && npm run build  # Build assets for production
+COPY .env.production .env
 EXPOSE 9000
 CMD ["php-fpm"]
-RUN php artisan key:generate
-#RUN php artisan migrate
-#RUN php artisan db:seed
 
 
-
-## --- Production Stage ---
-#FROM base AS production
-#COPY . /var/www
-#RUN composer install --optimize-autoloader --no-dev
-#COPY package*.json ./
-#RUN npm install --production && npm run build  # Build assets for production
-#COPY .env.production .env
-#RUN php artisan optimize:clear \
-# && php artisan config:cache \
-# && php artisan route:cache \
-# && php artisan view:cache
-#EXPOSE 9000
-#CMD ["php-fpm"]
+# --- Production Stage ---
+FROM base AS production
+COPY . /var/www
+RUN composer install --optimize-autoloader --no-dev
+COPY package*.json ./
+RUN npm install && npm run build  # Build assets for production
+COPY .env.production .env
+EXPOSE 9000
+CMD ["php-fpm"]

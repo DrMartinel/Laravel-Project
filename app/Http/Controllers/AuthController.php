@@ -23,7 +23,7 @@ class AuthController extends Controller
             'password' => $request->input('password')
         ];
         if(Auth::attempt($credentials)){
-            return redirect()->route('mainpage')->with('success','Login Successful');
+            return redirect()->route('myBooks')->with('success','Login Successful');
         }
         return redirect()->route('admin')->with('error','Username or password incorrect');
     }

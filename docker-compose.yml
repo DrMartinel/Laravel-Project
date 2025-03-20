@@ -1,3 +1,4 @@
+version: '3.8'
 services:
     app:  # This is the PHP-FPM container
         build:
@@ -7,6 +8,11 @@ services:
             - .:/var/www:delegated  # Mount the project directory (for development)
         depends_on:
             - db
+        healthcheck:
+            test: [ "CMD", "php-fpm", "-t" ] # Test if php-fpm config is valid
+            interval: 10s
+            timeout: 5s
+            retries: 3
         environment:
             - APP_ENV=local  # Or production
             - DB_HOST=db
@@ -30,14 +36,10 @@ services:
         image: mysql:8.0
         ports:
             - "3306:3306"
-        environment:
-            MYSQL_DATABASE: ${DB_DATABASE}
-            MYSQL_USER: ${DB_USERNAME}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
         volumes:
             - db_data:/var/lib/mysql
         env_file:
-            - .env
+            - .env.db
 
 volumes:
     db_data:

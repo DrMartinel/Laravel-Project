@@ -20,7 +20,6 @@ class PostController extends Controller
         if(!$request->authorize()) {
             return redirect('admin')->with('error','You are not authorized to access this page');
         }else{
-//            return redirect('homepage')->with('sucesss','Successfully added a new post');
             $data = [
               'title' => $request->input('title'),
               'content' => $request->input('content'),
@@ -44,11 +43,10 @@ class PostController extends Controller
                 }
 
             }catch(\Exception $e){
-//                return redirect()->back()->with('error',$e->getMessage());
                 return redirect()->back()->with('error',$data['title'].'|'.$data['content'].'|'.$data['author'].'<br>'.$e->getMessage());
             }
 
-            return redirect(route('mainpage'))->with('success',$data['title'].'|'.$data['content'].'|'.$data['author_id'].'|'.$data['category']);
+            return back()->with('success','Successfully Added');
         }
     }
 
@@ -70,7 +68,7 @@ class PostController extends Controller
             }catch (\Exception $e){
                 return redirect()->back()->with('error',$e->getMessage());
             }
-            return redirect(route('mainpage'))->with('success','Book updated successfully');
+            return back()->with('success','Book updated successfully');
         }
     }
 
@@ -90,28 +88,19 @@ class PostController extends Controller
             }catch (\Exception $e){
                 return redirect()->back()->with('error',$e->getMessage());
             }
-            return redirect(route('mainpage'))->with('success','Blog updated successfully');
+            return back()->with('success','Blog updated successfully');
         }
     }
 
     public function deleteBooks(Book $book){
             $data = $book->id;
-            Book::where('id', $data)->delete();
-            return redirect(route('mainpage'))->with('success','Book deleted successfully');
+            Book::where('id', $data)->forceDelete();
+            return redirect(route('myBooks'))->with('success','Book deleted successfully');
     }
 
     public function deleteBlogs(Blog $blog){
         $data = $blog->id;
-        Blog::where('id', $data)->delete();
-        return redirect(route('mainpage'))->with('success','Blog deleted successfully');
+        Blog::where('id', $data)->forceDelete();
+        return redirect(route('myBooks'))->with('success','Blog deleted successfully');
     }
-
-//    public function changeCategory(BasicRequest $request){
-//        if(!$request->authorize()) {
-//            return redirect('admin')->with('error','You are not authorized to access this page');
-//        }else{
-//            $category = $request->input('category_id');
-//            return view('mainpage',compact('category'));
-//        }
-//    }
 }
