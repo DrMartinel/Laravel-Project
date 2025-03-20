@@ -27,11 +27,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN chown -R www-data:www-data /var/www
-
-# Set appropriate permissions.
-#  - 755 is generally good for directories.
-#  - 644 is generally good for files.
-# We'll use find to apply these selectively.
 RUN find /var/www -type d -exec chmod 755 {} \;
 RUN find /var/www -type f -exec chmod 644 {} \;
 
