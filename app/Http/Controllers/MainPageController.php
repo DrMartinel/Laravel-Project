@@ -10,112 +10,67 @@ use Algolia\AlgoliaSearch\Api\SearchClient;
 
 class MainPageController extends Controller
 {
-    public function __construct()
+    public function __construct() {}
+
+    public function homePage(BasicRequest $request)
     {
-    }
-
-    public function myBooks(BasicRequest $request){
-        if(!$request->authorize()) {
-            return redirect('admin')->with('error','You are not authorized to access this page');
-        }else{
-            $userId = auth()->user()->id;
-            $userBooks = Book::with(['uploader','author'])
-                ->where('uploader_id', $userId)
-                ->paginate(3, ['*'], 'books');
-            return view('myPosts',compact('userBooks','userId'));
-        }
-    }
-
-    public function myBlogs(BasicRequest $request){
-        if(!$request->authorize()) {
-            return redirect('admin')->with('error','You are not authorized to access this page');
-        }else{
-            $userId = auth()->user()->id;
-            $userBlogs = Blog::with('uploader')
-                ->where('uploader_id', $userId)
-                ->paginate(3, ['*'], 'blogs');
-            return view('myPosts',compact('userBlogs','userId'));
-        }
-    }
-
-    public function searchPosts(BasicRequest $request){
-        $requestType = $request->method();
         $userId = auth()->user()->id;
-        if ($requestType === 'POST'){
-            session(['form_data' => $request->all()]);
-            $data = $request->input("keyword");
-            $category = $request->input("category");
-        }
-        else {
-            $formData = session('form_data');
-            $data = $formData['keyword'];
-            $category = $formData['category'];
-        }
+        $userBooks = Book::with(['uploader', 'author'])
+            ->where('uploader_id', $userId)
+            ->paginate(3, ['*'], 'books');
+        return view('homePage', compact('userBooks', 'userId'));
+    }
+
+    public function searchPosts(BasicRequest $request)
+    {
+        $userId = auth()->user()->id;
+        $data = $request->input("keyword");
+        $category = $request->input("category");
 
         $userBooks = Book::query() // Start with a base query
-        ->with(['uploader', 'author'])  // Eager load relationships
-        ->when($data, function ($query, $data) {
-            return $query->where('title', 'like', '%' . $data . '%')
-                ->orWhere('content', 'like', '%' . $data . '%');
-        })
+            ->with(['uploader', 'author'])  // Eager load relationships
+            ->when($data, function ($query, $data) {
+                return $query->where('title', 'like', '%' . $data . '%')
+                    ->orWhere('content', 'like', '%' . $data . '%');
+            })
             ->orderBy('title')
             ->paginate(3, ['*'], 'books');
 
         $userBlogs = Blog::query()
-        ->with('uploader')  // Eager load relationships
-        ->when($data, function ($query, $data) {
-            return $query->where('title', 'like', '%' . $data . '%')
-                ->orWhere('content', 'like', '%' . $data . '%');
-        })
+            ->with('uploader')  // Eager load relationships
+            ->when($data, function ($query, $data) {
+                return $query->where('title', 'like', '%' . $data . '%')
+                    ->orWhere('content', 'like', '%' . $data . '%');
+            })
             ->orderBy('title')
             ->paginate(3, ['*'], 'blogs');
 
         $foundResult = ($category == "book") ? $userBooks : $userBlogs;
 
-        return view('foundPosts',compact('foundResult','data','userId'));
-    }
-
-    public function allBooks(){
-        $userId = auth()->user()->id;
-        $userBooks = Book::with(['uploader','author'])->paginate(3, ['*'], 'books');
-        return view('allPosts',compact('userBooks','userId'));
-    }
-
-    public function allBlogs(){
-        $userId = auth()->user()->id;
-        $userBlogs = Blog::with('uploader')->paginate(3, ['*'], 'blogs');
-        return view('allPosts',compact('userBlogs','userId'));
-    }
-
-
-    public function newPosts(BasicRequest $request){
-        if(!$request->authorize()) {
-            return redirect('admin')->with('error','You are not authorized to access this page');
-        }else{
-            $authors = Author::all();
-            return view('addBlogsOrBooks', compact('authors'));
-        }
+        return view('foundPosts', compact('foundResult', 'data', 'userId'));
     }
 
     public function editBooks(Book $book)
     {
         // Laravel will automatically fetch the book by its ID
         $authors = Author::all();
-        return view('editBooks', compact('book','authors'));
+        return view('editBooks', compact('book', 'authors'));
     }
 
-    public function editBlogs(Blog $blog){
+    public function editBlogs(Blog $blog)
+    {
         $authors = Author::all();
-        return view('editBlogs', compact('blog','authors'));
+        return view('editBlogs', compact('blog', 'authors'));
     }
 
-    public function viewPosts(String $category, int $id){
+    public function viewPosts(String $category, int $id)
+    {
         $userId = auth()->user()->id;
-        if($category == 'Book'){
+        if ($category == 'Book') {
             $items = Book::find($id);
-        }else {
+        } else {
             $items = Blog::find($id);
         }
-        return(view('watchPosts',compact('items', 'id','userId','category')));
+        return (view('watchPosts', compact('items', 'id', 'userId', 'category')));
     }
 }

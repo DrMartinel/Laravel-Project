@@ -11,7 +11,7 @@ class BasicRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check()){
+        if (auth()->check()) {
             return true;
         }
         return false;

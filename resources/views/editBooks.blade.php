@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-@extends('vendor.layouts.app')
+@extends('vendor.layouts.specialLayout')
 @section('content')
     @include('vendor.partials.post-controlling-headline')
         <div class="wrapper wrapper-content animated fadeInRight">

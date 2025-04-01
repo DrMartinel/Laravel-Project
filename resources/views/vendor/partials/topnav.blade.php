@@ -12,13 +12,13 @@
                             </div>
                         </div>
                         <div class="ibox-content" id="ibox-content" hidden="true">
-                            <form class="form-horizontal" action="{{route("searchPosts")}}" method="post">
-                                @csrf
+                            <form class="form-horizontal" action="{{ route('searchPosts') }}" method="GET">
                                 <p>Enter your keyword and category</p>
                                 <div class="form-group" id="search-area">
                                     <label class="col-lg-2 control-label">Keyword</label>
                                     <div class="col-lg-10">
-                                        <input type="text" placeholder="Enter your keyword" class="form-control" name="keyword">
+                                        <input type="text" placeholder="Enter your keyword" class="form-control"
+                                            name="keyword">
                                     </div>
                                 </div>
                                 <div class="form-group"><label class="col-lg-2 control-label">Category</label>
@@ -29,7 +29,6 @@
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="col-lg-offset-2 col-lg-10">
                                         <button class="btn btn-sm btn-white" type="submit">Search</button>
@@ -42,7 +41,7 @@
             </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-                    <a href="{{route('logout')}}">
+                    <a href="{{ route('logout') }}">
                         <i class="fa fa-sign-out"></i> Log out
                     </a>
                 </li>
@@ -51,8 +50,7 @@
     </div>
 
     <script>
-        document.getElementById('show-button').addEventListener('click',() => {
+        document.getElementById('show-button').addEventListener('click', () => {
             document.getElementById('ibox-content').style.hidden = "";
         })
     </script>
-

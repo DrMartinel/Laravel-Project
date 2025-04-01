@@ -34,8 +34,9 @@ FROM base AS development
 COPY . /var/www
 RUN composer install --optimize-autoloader --no-dev
 COPY package*.json ./
+WORKDIR /var/www
 RUN npm install && npm run build  # Build assets for production
-COPY .env.production .env
+COPY .env .env
 EXPOSE 9000
 CMD ["php-fpm"]
 
@@ -45,7 +46,8 @@ FROM base AS production
 COPY . /var/www
 RUN composer install --optimize-autoloader --no-dev
 COPY package*.json ./
+WORKDIR /var/www
 RUN npm install && npm run build  # Build assets for production
-COPY .env.production .env
+COPY .env .env
 EXPOSE 9000
 CMD ["php-fpm"]

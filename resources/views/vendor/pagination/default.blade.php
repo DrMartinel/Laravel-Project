@@ -11,10 +11,10 @@
                 </li>
             @else
                 <li>
-                    <a href="{{ $paginator->url(1)}}" rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;&lsaquo;</a>
+                    <a wire:click="resetPage('{{ $paginator->getPageName() }}')" rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;&lsaquo;</a>
                 </li>
                 <li>
-                    <a href="{{ $paginator->previousPageUrl()}}" rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;</a>
+                    <a wire:click="previousPage('{{ $paginator->getPageName() }}')" rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;</a>
                 </li>
             @endif
 
@@ -29,9 +29,9 @@
                 @if (is_array($element))
                     @foreach ($element as $page => $url)
                         @if ($page == $paginator->currentPage())
-                            @if (!$paginator->onFirstPage()) <li><a href="{{ $paginator->previousPageUrl()}}">{{ $page - 1}}</a></li>@endif
+                            @if (!$paginator->onFirstPage()) <li><a wire:click="previousPage('{{ $paginator->getPageName() }}')">{{ $page - 1}}</a></li>@endif
                             <li class="active" aria-current="page"><span>{{ $page }}</span></li>
-                                @if ($paginator->hasMorePages())<li><a href="{{ $paginator->nextPageUrl()}}">{{ $page + 1}}</a></li>@endif
+                                @if ($paginator->hasMorePages())<li><a wire:click="nextPage('{{ $paginator->getPageName() }}')">{{ $page + 1}}</a></li>@endif
                         @endif
                     @endforeach
                 @endif
@@ -40,10 +40,10 @@
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <li>
-                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')">&rsaquo;</a>
+                    <a wire:click="nextPage('{{ $paginator->getPageName() }}')" rel="next" aria-label="@lang('pagination.next')">&rsaquo;</a>
                 </li>
                 <li>
-                    <a href="{{ $paginator->url($paginator->lastPage()) }}" rel="next" aria-label="@lang('pagination.next')">&rsaquo;&rsaquo;</a>
+                    <a wire:click="setPage('{{ $paginator->lastPage() }}', '{{ $paginator->getPageName() }}')" rel="next" aria-label="@lang('pagination.next')">&rsaquo;&rsaquo;</a>
                 </li>
             @else
                 <li class="disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
@@ -54,5 +54,16 @@
                 </li>
             @endif
         </ul>
+        <div>
+            <p class="small text-muted">
+                {!! __('Showing') !!}
+                <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
+                {!! __('to') !!}
+                <span class="fw-semibold">{{ $paginator->lastItem() }}</span>
+                {!! __('of') !!}
+                <span class="fw-semibold">{{ $paginator->total() }}</span>
+                {!! __('results') !!}
+            </p>
+        </div>
     </nav>
 @endif

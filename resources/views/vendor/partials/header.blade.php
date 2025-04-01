@@ -14,21 +14,39 @@
                     </div>
                 </li>
                 <li>
-                    <a href="{{route('newPosts')}}"><i class="fa fa-plus"></i> <span class="nav-label">New Posts</span></a>
+                    <a id="newPostsComponent"><i class="fa fa-plus"></i> <span class="nav-label">New Posts</span></a>
                 <li>
                     <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">All Posts</span> <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a href="{{route('allBooks')}}">Books</a></li>
-                        <li><a href="{{route('allBlogs')}}">Blogs</a></li>
+                        <li><a id="allBooksComponent">Books</a></li>
+                        <li><a id="allBlogsComponent">Blogs</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="index.html"><i class="fa fa-diamond"></i></i> <span class="nav-label">My Posts</span> <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a href="{{route('myBooks')}}">Books</a></li>
-                        <li><a href="{{route('myBlogs')}}">Blogs</a></li>
+                        <li><a id="myBooksComponent">Books</a></li>
+                        <li><a id="myBlogsComponent">Blogs</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
     </nav>
+
+    <script>
+        document.getElementById('newPostsComponent').addEventListener('click', () => {
+            Livewire.dispatch('showPosts', {category: 'newPosts', typeOfPage: 'addItemPage'});
+        });
+        document.getElementById('allBooksComponent').addEventListener('click', () => {
+            Livewire.dispatch('showPosts', {category: 'allBooks', typeOfPage: 'listingPage'});
+        });
+        document.getElementById('allBlogsComponent').addEventListener('click', () => {
+            Livewire.dispatch('showPosts', {category: 'allBlogs', typeOfPage: 'listingPage'});
+        });
+        document.getElementById('myBooksComponent').addEventListener('click', () => {
+            Livewire.dispatch('showPosts', {category: 'myBooks', typeOfPage: 'listingPage'});
+        });
+        document.getElementById('myBlogsComponent').addEventListener('click', () => {
+            Livewire.dispatch('showPosts', {category: 'myBlogs', typeOfPage: 'listingPage'});
+        });
+    </script>

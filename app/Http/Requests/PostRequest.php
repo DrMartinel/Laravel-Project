@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use \Illuminate\Support\Facades\Auth;
 
 class PostRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class PostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check()){
+        if (auth()->check()) {
             return true;
         }
         return false;
@@ -25,10 +26,10 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'=>'required|string|min:5|max:255',
-            'content'=>'required|string|min:5',
-            'author'=>'required',
-            'category'=>'required',
+            'title' => 'required|string|min:5|max:255',
+            'content' => 'required|string|min:5',
+            'author' => 'required',
+            'category' => 'required',
         ];
     }
 }

@@ -1,10 +1,10 @@
-@extends('vendor.layouts.app')
+@extends('vendor.layouts.specialLayout')
 @section('headline')
     @php
-    $headline = $data;
-    $searchPage = true;
+        $headline = $data;
+        $searchPage = true;
     @endphp
-    @include('vendor.partials.headline',compact('headline','searchPage'))
+    @include('livewire.headline-component',compact('headline','searchPage'))
 @endsection
 @section('content')
     <div class="row">
