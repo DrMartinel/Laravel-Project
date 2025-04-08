@@ -9,12 +9,12 @@ class HeadlineComponent extends Component
 {
     public $headline;
 
-//    public $isSearchPage;
+    //    public $isSearchPage;
 
     public function mount()
     {
         $this->headline = "My Books";
-//        $this->isSearchPage = false;
+        //        $this->isSearchPage = false;
     }
 
     #[On('showPosts')]
@@ -36,8 +36,11 @@ class HeadlineComponent extends Component
             case 'myBlogs':
                 $this->headline = "My Blogs";
                 break;
+            case 'message':
+                $this->headline = 'Message';
+                break;
         }
-//        $this->isSearchPage = $isSearchPage;
+        //        $this->isSearchPage = $isSearchPage;
     }
 
     public function render()
