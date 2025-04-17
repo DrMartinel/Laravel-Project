@@ -265,7 +265,7 @@
     -o-transition: border linear 0.2s, box-shadow linear 0.2s;
     transition: border linear 0.2s, box-shadow linear 0.2s; }
 .chosen-container-active .chosen-choices .search-field input[type="text"] {
-    color: #111 !important; }
+    color: #777777 !important; }
 .chosen-container-active.chosen-with-drop .chosen-choices {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0; }

@@ -8,8 +8,8 @@
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong
                                         class="font-bold">{{ auth()->user()->name }}</strong>
-                                </span> <span class="text-muted text-xs block">Art Director <b
-                                        class="caret"></b></span> </span> </a>
+                                </span> <span class="text-muted text-xs block"><a href="{{ route('profile') }}"> Your
+                                        profile </a> <b class="caret"></b></span> </span> </a>
                     </div>
                     <div class="logo-element">
                         IN+
@@ -33,9 +33,6 @@
                         <li><a id="myBlogsComponent">Blogs</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a id="messageComponent"><i class="fa fa-inbox"></i> <span class="nav-label">  Message</span></a>
-                <li>
             </ul>
         </div>
     </nav>
@@ -69,12 +66,6 @@
             Livewire.dispatch('showPosts', {
                 category: 'myBlogs',
                 typeOfPage: 'listingPage'
-            });
-        });
-        document.getElementById('messageComponent').addEventListener('click', () => {
-            Livewire.dispatch('showPosts', {
-                category: 'message',
-                typeOfPage: 'messagePage'
             });
         });
     </script>

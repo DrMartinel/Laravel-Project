@@ -29,9 +29,7 @@ class ShowPostsComponent extends Component
     #[On('showPosts')]
     public function setCategory($category, $typeOfPage)
     {
-        // if ($typeOfPage == 'addItemPage') {
         $this->dispatch('reinitializeTinyMCE');
-        // }
         $this->category = $category;
         $this->typeOfPages = $typeOfPage;
     }
@@ -71,9 +69,6 @@ class ShowPostsComponent extends Component
             return view('livewire.add-posts-component', [
                 'authors' => $authors,
             ]);
-        }
-        if ($this->typeOfPages === 'messagePage') {
-            return view('livewire.message-viewing-component');
         }
     }
 }

@@ -5319,12 +5319,12 @@ dd.project-people {
 .chat-discussion {
   background: #eee;
   padding: 15px;
-  height: 500px;
+  height: 510px;
   overflow-y: auto;
 }
 .chat-users {
   overflow-y: auto;
-  height: 400px;
+  height: 500px;
 }
 .chat-message-form .form-group {
   margin-bottom: 0;

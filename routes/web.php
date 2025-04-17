@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\MessageController;
 use App\Http\Middleware\AuthMiddleware;
+use App\Livewire\MessageComponent;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,4 +45,12 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
     Route::get('searchResults', [MainPageController::class, 'searchPosts'])->name('searchPosts');
     Route::get('searchResultsView', [MainPageController::class, 'searchPostsView'])->name('searchPostsView');
+
+    Route::get('messages', [MessageComponent::class, 'index'])->name('messages');
+
+    Route::get('profile', function () {
+        return view('profile');
+    })->name('profile');
+
+    Route::post('createConversation', [MessageController::class, 'createConversation'])->name('createConversation');
 });
