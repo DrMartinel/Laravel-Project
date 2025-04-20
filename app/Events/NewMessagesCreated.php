@@ -22,7 +22,6 @@ class NewMessagesCreated implements ShouldBroadcast
      */
     public function __construct(Message $message)
     {
-        // Eager load sender data to include in the broadcast payload
         $this->message = $message->load('sender');
     }
 
@@ -31,8 +30,6 @@ class NewMessagesCreated implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        // Broadcast on a private channel specific to this chat
-        // Only authenticated users who are part of this chat can listen
         return [
             new PrivateChannel('chat.' . $this->message->chat_id),
         ];
@@ -43,7 +40,7 @@ class NewMessagesCreated implements ShouldBroadcast
      */
     public function broadcastAs(): string
     {
-        return 'message.sent'; // Client will listen for this event name
+        return 'message.sent';
     }
 
     /**
@@ -57,11 +54,10 @@ class NewMessagesCreated implements ShouldBroadcast
                 'id' => $this->message->id,
                 'chat_id' => $this->message->chat_id,
                 'content' => $this->message->content,
-                'created_at' => $this->message->created_at->toIso8601String(), // Consistent format
-                'sender' => [ // Include sender info
+                'created_at' => $this->message->created_at->toIso8601String(),
+                'sender' => [
                     'id' => $this->message->sender->id,
                     'name' => $this->message->sender->name,
-                    // Add other sender details like avatar if needed
                 ],
             ]
         ];

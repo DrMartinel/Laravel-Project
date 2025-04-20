@@ -1,4 +1,4 @@
-<div class="wrapper wrapper-content animated fadeInDown">
+<div class="">
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
@@ -49,9 +49,11 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <h4>Cant find your friend?</h4>
-                                        <p>You can find your friend right here</p>
+                                        <p>Not our fault!!!</p>
                                         <p class="text-center">
-                                            <a href=""><i class="fa fa-star big-icon"></i></a>
+                                            <a href="">
+                                                <image src={{ asset('img/sticker.jpg') }}></image>
+                                            </a>
                                         </p>
                                     </div>
                                 </div>
@@ -68,10 +70,17 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-md-9">
+                            <div>
+                                @if ($currentChatId === 0)
+                                    <div class="alert alert-warning">
+                                        <strong>Warning!</strong> Please create a chat room to start chatting.
+                                    </div>
+                                @endif
+                            </div>
                             <div class="chat-discussion">
                                 @foreach ($currentChatMessages as $message)
                                     @if ($message->sender_id === auth()->user()->id)
-                                        <div class="chat-message right" wire:key="{{ $message->id }}">
+                                        <div class="chat-message right user-messages" wire:key="{{ $message->id }}">
                                             <img class="message-avatar" src="img/a{{ random_int(1, 5) }}.jpg"
                                                 alt="">
                                             <div class="message">
@@ -80,6 +89,7 @@
                                                 <span class="message-date"> {{ $message->updated_at }} </span>
                                                 <span class="message-content"> {{ $message->content }} </span>
                                             </div>
+                                            <div class="edit-button" hidden="true">Edit button</div>
                                         </div>
                                     @else
                                         <div class="chat-message left" wire:key="{{ $message->id }}">
@@ -131,6 +141,7 @@
     @script
         <script>
             document.addEventListener('livewire:initialized', () => {
+                //This code of block is to set the chat always at the bottom
                 let isInitialLoad = true;
 
                 // Add textarea enter key handler
@@ -141,10 +152,11 @@
                     }
                 });
 
+                const chatDiscussion = document.querySelector('.chat-discussion');
+
                 function scrollToBottom() {
-                    const chatDiscussion = document.querySelector('.chat-discussion');
+                    const targetScroll = chatDiscussion.scrollHeight;
                     if (chatDiscussion) {
-                        const targetScroll = chatDiscussion.scrollHeight;
                         if (isInitialLoad) {
                             chatDiscussion.scrollTop = targetScroll;
                             isInitialLoad = false;
@@ -158,13 +170,72 @@
                 }
 
                 scrollToBottom();
+                //End of the code block
+
+                // This function initializes the Chosen plugin on elements matching the selector once the livewire component is updated
+                function initializeChosen(selector = '.chosen-select') {
+                    if (typeof jQuery !== 'undefined' && typeof jQuery.fn.chosen !== 'undefined') {
+                        const elements = $(selector);
+
+                        if (elements.length > 0) {
+                            try {
+                                elements.chosen('destroy');
+                                elements.chosen({
+                                    width: '100%',
+                                    placeholder_text_multiple: 'Select Options...',
+                                    no_results_text: "Oops, nothing found!"
+                                });
+                            } catch (e) {
+                                console.error('Error during Chosen destroy/init:', e);
+                            }
+                        }
+                    } else {
+                        console.error("jQuery or jQuery.chosen not available!");
+                    }
+                }
 
                 Livewire.on('newMessages', () => {
                     setTimeout(scrollToBottom, 50);
                 });
+
+                {{--  const utilsButton = document.querySelector('.edit-button');
+
+                document.querySelectorAll('.user-messages').forEach(element => {
+                    element.addEventListener('mouseenter', () => {
+                        console.log('Mouse over user message');
+                    });
+
+                    element.addEventListener('mouseleave', () => {
+                        console.log('Mouse out user message');
+                    });
+                });  --}}
+
+                let currentChannel = null;
+
+                Livewire.on('chat-room-changed', ({
+                    newRoomId,
+                    oldRoomId
+                }) => {
+                    console.log('Chat room changed:', newRoomId, oldRoomId);
+                    setTimeout(() => {
+                        scrollToBottom();
+                        initializeChosen();
+                    }, 100);
+
+                    if (currentChannel) {
+                        currentChannel.leave();
+                    }
+
+                    if (newRoomId) {
+                        currentChannel = Echo.private(`chat.${newRoomId}`)
+                            .listen('.message.sent', (e) => {
+                                console.log('Received message:', e);
+                                $wire.handleIncomingMessage(e);
+                            });
+                    }
+                });
             });
         </script>
-
         <script>
             $('.chosen-select').chosen({
                 width: "100%"

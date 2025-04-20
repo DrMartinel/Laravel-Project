@@ -15,7 +15,6 @@ class MessageController extends Controller
 {
     public function createConversation(BasicRequest $request)
     {
-        Log::info($request->input("participants"));
         $newParticipants = $request->input("participants");
 
         $newConversation = Conversation::factory()->create([
@@ -23,14 +22,15 @@ class MessageController extends Controller
             'is_group' => true,
         ]);
 
-        // Create chat participants
-        $isFirstParticipant = true;
+        Chatter::create([
+            'chatter_id' => Auth::id(),
+            'conversation_id' => $newConversation->id
+        ]);
         foreach ($newParticipants as $newParticipantId) {
             Chatter::create([
-                'chatter_id' => ($isFirstParticipant) ? Auth::id() : $newParticipantId,
+                'chatter_id' => $newParticipantId,
                 'conversation_id' => $newConversation->id
             ]);
-            $isFirstParticipant = false;
         }
 
         return redirect()->back()->with('success', 'Conversation created successfully!');

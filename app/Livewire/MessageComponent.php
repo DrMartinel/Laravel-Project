@@ -31,7 +31,7 @@ class MessageComponent extends Component
         $this->currentChatMessages = '';
         $this->currentUserId = Auth::id();
         $this->getCurrentConversations();
-        $this->currentChatId = $this->conversations[0]->conversation_id; //Demo data
+        $this->currentChatId = $this->conversations[0]->conversation_id ?? 0;
         $this->getMessages();
         $this->users = User::all();
     }
@@ -53,6 +53,7 @@ class MessageComponent extends Component
 
     public function selectConversation(int $id)
     {
+        $this->dispatch('chat-room-changed', newRoomId: $id, oldRoomId: $this->currentChatId);
         $this->currentChatId = $id;
     }
 
@@ -78,9 +79,13 @@ class MessageComponent extends Component
             'sender_id' => $this->currentUserId,
             'chat_id' => $this->currentChatId,
         ]);
-
+        Log::info('Message sent: ' . $this->newMessage);
         $this->dispatch('newMessages');
-        broadcast(new NewMessagesCreated($newMessage->load('sender')))->toOthers();
+        try {
+            broadcast(new NewMessagesCreated($newMessage->load('sender')))->toOthers();
+        } catch (\Exception $e) {
+            Log::error('Error broadcasting message: ' . $e->getMessage());
+        }
         $this->newMessage = '';
     }
 

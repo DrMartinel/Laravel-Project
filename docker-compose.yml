@@ -19,6 +19,9 @@ services:
             - DB_DATABASE=${DB_DATABASE}
             - DB_USERNAME=${DB_USERNAME}
             - DB_PASSWORD=${DB_PASSWORD}
+            - REVERB_HOST=reverb
+            - REVERB_PORT=8080
+            - REVERB_SCHEME=http
         env_file:
             - .env
 
@@ -27,7 +30,7 @@ services:
         ports:
             - "80:80"   # Map port 80 on the host to port 80 in the container
         volumes:
-            - .:/var/www:delegated      # Mount the project directory (for serving static assets)
+            - .:/var/www:delegated # Mount the project directory (for serving static assets)
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro # Mount the Nginx config file (read-only)
         depends_on:
             - app     # Nginx depends on the PHP-FPM container
@@ -40,6 +43,22 @@ services:
             - db_data:/var/lib/mysql
         env_file:
             - .env.db
+
+    reverb:
+        build:
+            context: .
+            dockerfile: Dockerfile.reverb
+        ports:
+            - "8080:8080"
+        environment:
+            - APP_KEY=${REVERB_APP_KEY}
+            - APP_SECRET=${REVERB_APP_SECRET}
+            - PORT=8080
+        depends_on:
+            - app
+        env_file:
+            - .env
+        restart: unless-stopped
 
 volumes:
     db_data:
