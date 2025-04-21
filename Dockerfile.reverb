@@ -29,6 +29,3 @@ RUN composer install --optimize-autoloader --no-dev
 
 # Copy environment file
 COPY .env .env
-
-# Set the entry command for Reverb
-CMD ["php", "artisan", "reverb:start","--debug"]

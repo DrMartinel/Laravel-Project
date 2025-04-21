@@ -195,10 +195,14 @@
                 }
 
                 Livewire.on('newMessages', () => {
-                    setTimeout(scrollToBottom, 50);
+                    console.log('New messages received');
+                    setTimeout(() => {
+                        scrollToBottom();
+                        initializeChosen();
+                    }, 50);
                 });
 
-                {{--  const utilsButton = document.querySelector('.edit-button');
+                const utilsButton = document.querySelector('.edit-button');
 
                 document.querySelectorAll('.user-messages').forEach(element => {
                     element.addEventListener('mouseenter', () => {
@@ -208,7 +212,7 @@
                     element.addEventListener('mouseleave', () => {
                         console.log('Mouse out user message');
                     });
-                });  --}}
+                });
 
                 let currentChannel = null;
 
@@ -216,7 +220,6 @@
                     newRoomId,
                     oldRoomId
                 }) => {
-                    console.log('Chat room changed:', newRoomId, oldRoomId);
                     setTimeout(() => {
                         scrollToBottom();
                         initializeChosen();

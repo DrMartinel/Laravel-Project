@@ -49,16 +49,29 @@ services:
             context: .
             dockerfile: Dockerfile.reverb
         ports:
-            - "8080:8080"
-        environment:
-            - APP_KEY=${REVERB_APP_KEY}
-            - APP_SECRET=${REVERB_APP_SECRET}
-            - PORT=8080
-        depends_on:
-            - app
-        env_file:
-            - .env
+        - "${REVERB_PORT:-8080}:8080"
+        env_file: # Use env_file OR environment, not both usually
+        - .env   # Make sure this .env has correct DB_HOST=mysql, REDIS_HOST=redis etc. if Reverb needs them
         restart: unless-stopped
+        command: php artisan reverb:start --host=0.0.0.0 --port=8080 --debug
+
+    worker:
+        build: # Use same build as app
+            context: .
+            target: development # Or production
+        command: php artisan queue:work --queue=default --sleep=3 --tries=3 # Adjust queue, sleep, tries as needed
+        restart: unless-stopped
+        volumes:
+            - .:/var/www:delegated # Needs access to code
+        environment: # Needs DB access etc. Copy relevant vars or use env_file
+            - APP_ENV=local
+            - DB_HOST=db
+            - QUEUE_CONNECTION=database # Tell worker to use database queue
+            # Add other necessary vars like DB credentials if not using env_file below
+        env_file:
+            - .env # Can inherit from main .env, but ensure DB_HOST etc are correct for container
+        depends_on:
+            - db
 
 volumes:
     db_data:

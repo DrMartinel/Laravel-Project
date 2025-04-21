@@ -53,6 +53,7 @@ class MessageComponent extends Component
 
     public function selectConversation(int $id)
     {
+        Log::info('Chatroom changed to: ' . $id);
         $this->dispatch('chat-room-changed', newRoomId: $id, oldRoomId: $this->currentChatId);
         $this->currentChatId = $id;
     }
@@ -81,11 +82,7 @@ class MessageComponent extends Component
         ]);
         Log::info('Message sent: ' . $this->newMessage);
         $this->dispatch('newMessages');
-        try {
-            broadcast(new NewMessagesCreated($newMessage->load('sender')))->toOthers();
-        } catch (\Exception $e) {
-            Log::error('Error broadcasting message: ' . $e->getMessage());
-        }
+        broadcast(new NewMessagesCreated($newMessage->load('sender')))->toOthers();
         $this->newMessage = '';
     }
 
