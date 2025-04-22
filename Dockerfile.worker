@@ -1,0 +1,31 @@
+FROM php:8.3-cli-alpine
+
+# Install minimal required dependencies and extensions
+RUN apk add --no-cache \
+    git \
+    zip \
+    unzip \
+    libzip-dev \
+    && docker-php-ext-install -j$(nproc) \
+    pdo_mysql \
+    pcntl \
+    bcmath \
+    zip
+
+# Get composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+# Copy only necessary files
+COPY composer.* ./
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+COPY . .
+RUN chmod -R 755 storage bootstrap/cache \
+    && php artisan config:cache \
+    && php artisan route:cache
+
+USER www-data
+
+CMD ["php", "artisan", "queue:work", "--queue=default", "--sleep=3", "--tries=3"]

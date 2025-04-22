@@ -56,9 +56,9 @@ services:
         command: php artisan reverb:start --host=0.0.0.0 --port=8080 --debug
 
     worker:
-        build: # Use same build as app
+        build:
             context: .
-            target: development # Or production
+            dockerfile: Dockerfile.worker
         command: php artisan queue:work --queue=default --sleep=3 --tries=3 # Adjust queue, sleep, tries as needed
         restart: unless-stopped
         volumes:
