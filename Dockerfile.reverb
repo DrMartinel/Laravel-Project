@@ -4,12 +4,6 @@ FROM php:8.3-cli
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    libzip-dev \
     && docker-php-ext-install -j$(nproc) pcntl pdo_mysql sockets
 
 # Get composer

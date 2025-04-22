@@ -4,16 +4,6 @@ FROM php:8.3-fpm AS base
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    libzip-dev \
-    nodejs \
-    npm \
-    libjpeg62-turbo-dev \
-    libfreetype-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd zip pdo_mysql mbstring exif pcntl bcmath
 
