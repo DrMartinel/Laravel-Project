@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip \
     unzip \
     libzip-dev \
+    nodejs \
+    npm \
     libjpeg62-turbo-dev \
     libfreetype-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
