@@ -1,11 +1,12 @@
-FROM php:8.3-cli-alpine
+FROM php:8.3-cli
 
 # Install minimal required dependencies and extensions
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y \
     git \
     zip \
     unzip \
     libzip-dev \
+    && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install -j$(nproc) \
     pdo_mysql \
     pcntl \
