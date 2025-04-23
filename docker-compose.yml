@@ -42,7 +42,7 @@ services:
         volumes:
             - db_data:/var/lib/mysql
         env_file:
-            - .env.db
+            - .env
 
     reverb:
         build:
