@@ -39,10 +39,16 @@ services:
         image: mysql:8.0
         ports:
             - "3306:3306"
-        volumes:
-            - db_data:/var/lib/mysql
         env_file:
             - .env
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u${DB_USERNAME}", "-p${DB_PASSWORD}"] # Use credentials if needed after initial start, or just ping first
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 30s # Give MySQL time to initialize initially
+        volumes:
+            - db_data:/var/lib/mysql
 
     reverb:
         build:
@@ -54,6 +60,9 @@ services:
         - .env   # Make sure this .env has correct DB_HOST=mysql, REDIS_HOST=redis etc. if Reverb needs them
         restart: unless-stopped
         command: php artisan reverb:start --host=0.0.0.0 --port=8080 --debug
+        depends_on:
+            - db:
+                condition: service_healthy # Wait for db to be healthy before starting worker
 
     worker:
         build:
@@ -70,7 +79,8 @@ services:
         env_file:
             - .env # Can inherit from main .env, but ensure DB_HOST etc are correct for container
         depends_on:
-            - db
+            - db:
+                condition: service_healthy # Wait for db to be healthy before starting worker
 
 volumes:
     db_data:
