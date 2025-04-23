@@ -59,13 +59,12 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.worker
-        command: php artisan queue:work --queue=default --sleep=3 --tries=3 # Adjust queue, sleep, tries as needed
         restart: unless-stopped
         volumes:
             - .:/var/www:delegated # Needs access to code
         environment: # Needs DB access etc. Copy relevant vars or use env_file
             - APP_ENV=local
-            - DB_HOST=db
+            - DB_HOST=db # Or db if using docker network
             - QUEUE_CONNECTION=database # Tell worker to use database queue
             # Add other necessary vars like DB credentials if not using env_file below
         env_file:
