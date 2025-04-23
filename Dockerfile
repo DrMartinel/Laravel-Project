@@ -49,7 +49,9 @@ COPY . /var/www
 RUN composer install --optimize-autoloader --no-dev
 COPY package*.json ./
 WORKDIR /var/www
-RUN npm install && npm run build  # Build assets for production
+RUN npm install && npm run build
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 COPY .env .env
 EXPOSE 9000
 CMD ["php-fpm"]
