@@ -19,7 +19,7 @@ services:
             - DB_DATABASE=${DB_DATABASE}
             - DB_USERNAME=${DB_USERNAME}
             - DB_PASSWORD=${DB_PASSWORD}
-            - REVERB_HOST=reverb
+            # - REVERB_HOST=reverb
             - REVERB_PORT=8080
             - REVERB_SCHEME=http
         env_file:
@@ -54,15 +54,15 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.reverb
-        ports:
-        - "${REVERB_PORT:-8080}:8080"
+        # ports:
+        # - "${REVERB_PORT:-8080}:8080"
         env_file: # Use env_file OR environment, not both usually
         - .env   # Make sure this .env has correct DB_HOST=mysql, REDIS_HOST=redis etc. if Reverb needs them
         restart: unless-stopped
         command: php artisan reverb:start --host=0.0.0.0 --port=8080 --debug
         depends_on:
-            - db:
-                condition: service_healthy # Wait for db to be healthy before starting worker
+            db:
+                condition: service_healthy
 
     worker:
         build:
@@ -79,7 +79,7 @@ services:
         env_file:
             - .env # Can inherit from main .env, but ensure DB_HOST etc are correct for container
         depends_on:
-            - db:
+            db:
                 condition: service_healthy # Wait for db to be healthy before starting worker
 
 volumes:
